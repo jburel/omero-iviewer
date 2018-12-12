@@ -96,7 +96,7 @@ def ExpandDirectories(refs):
             result.append(os.path.join(directory, filename))
     else:
       result.append(ref)
-  return map(os.path.normpath, result)
+  return list(map(os.path.normpath, result))
 
 
 class DependencyInfo(object):
@@ -440,7 +440,7 @@ def GetInputsFromOptions(options):
   inputs = options.inputs
   if not inputs:  # Parse stdin
     logging.info('No inputs specified. Reading from stdin...')
-    inputs = filter(None, [line.strip('\n') for line in sys.stdin.readlines()])
+    inputs = [_f for _f in [line.strip('\n') for line in sys.stdin.readlines()] if _f]
 
   logging.info('Scanning files...')
   inputs = ExpandDirectories(inputs)

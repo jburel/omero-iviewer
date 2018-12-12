@@ -35,7 +35,7 @@ from omero.rtypes import rint, rlong
 from omero_sys_ParametersI import ParametersI
 import omero.util.pixelstypetopython as pixelstypetopython
 
-from version import __version__
+from .version import __version__
 from omero_version import omero_version
 
 WEB_API_VERSION = 0
@@ -78,7 +78,7 @@ def index(request, iid=None, conn=None, **kwargs):
 
     return render(
         request, 'omero_iviewer/index.html',
-        {'params': params, 'iviewer_url_suffix': u"?_iviewer-%s" % __version__}
+        {'params': params, 'iviewer_url_suffix': "?_iviewer-%s" % __version__}
     )
 
 
@@ -165,7 +165,7 @@ def persist_rois(request, conn=None, **kwargs):
     # delete entire (empty) rois
     try:
         empty_rois = rois.get('empty_rois', {})
-        empty_rois_ids = [long(k) for k in list(empty_rois.keys())]
+        empty_rois_ids = [int(k) for k in list(empty_rois.keys())]
         if (len(empty_rois_ids) > 0):
             conn.deleteObjects("Roi", empty_rois_ids, wait=True)
         # set ids after successful deletion,
@@ -179,13 +179,13 @@ def persist_rois(request, conn=None, **kwargs):
     # remove individual shapes (so as to not punch holes into shape index)
     try:
         deleted = rois.get('deleted', {})
-        deleted_rois_ids = deleted.keys()
+        deleted_rois_ids = list(deleted.keys())
         if len(deleted_rois_ids) > 0:
             rois_service = conn.getRoiService()
             rois_to_be_updated = []
             for d in deleted_rois_ids:
                 r = rois_service.findByRoi(
-                    long(d), None, conn.SERVICE_OPTS).rois[0]
+                    int(d), None, conn.SERVICE_OPTS).rois[0]
                 for s in r.copyShapes():
                     roi_shape_id = str(d) + ':' + str(s.getId().getValue())
                     if roi_shape_id in deleted[d]:
@@ -275,7 +275,7 @@ def image_data(request, image_id, conn=None, **kwargs):
 
         # add available families
         rv['families'] = []
-        families = image.getFamilies().values()
+        families = list(image.getFamilies().values())
         for fam in families:
             rv['families'].append(fam.getValue())
 
@@ -351,7 +351,7 @@ def save_projection(request, conn=None, **kwargs):
         # delegate to projectPixels
         new_image_id = proj_svc.projectPixels(
             pixels_id, pixels_type, proj, 0, img.getSizeT()-1,
-            range(img.getSizeC()), 1, int(start), int(end), file_name)
+            list(range(img.getSizeC())), 1, int(start), int(end), file_name)
 
         # apply present rendering settings
         try:
@@ -385,7 +385,7 @@ def save_projection(request, conn=None, **kwargs):
             conn.SERVICE_OPTS.setOmeroGroup(
                 conn.getGroupFromContext().getId())
             link = omero.model.DatasetImageLinkI()
-            link.parent = omero.model.DatasetI(long(dataset_id), False)
+            link.parent = omero.model.DatasetI(int(dataset_id), False)
             link.child = omero.model.ImageI(new_image_id, False)
             upd_svc.saveObject(link, conn.SERVICE_OPTS)
     except Exception as save_projection_exception:
@@ -406,7 +406,7 @@ def well_images(request, conn=None, **kwargs):
 
         # set well id
         params = ParametersI()
-        params.add("well_id", rlong(long(well_id)))
+        params.add("well_id", rlong(int(well_id)))
 
         # get total count first
         count = query_service.projection(
@@ -550,7 +550,7 @@ def shape_stats(request, conn=None, **kwargs):
     channels = []
     try:
         ids = [
-            long(id.split(':')[1]) if ':' in id else long(id)
+            int(id.split(':')[1]) if ':' in id else int(id)
             for id in ids.split(',') if id != ''
         ]
         z, t = int(z), int(t)

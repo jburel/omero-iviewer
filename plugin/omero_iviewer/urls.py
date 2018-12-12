@@ -18,7 +18,7 @@
 from django.conf.urls import patterns
 from django.conf.urls import url
 
-import views
+from . import views
 
 urlpatterns = patterns(
 
