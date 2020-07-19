@@ -86,7 +86,7 @@
         <exec dir="${basedir}" resultproperty="result" executable="${karma}" >
             <arg value="start"/>
             <arg value="--single-run"/>
-            <arg value="--browsers ChromeHeadless"/>
+            <arg value="--browsers ChromeHeadlessNoSandbox"/>
             <arg value="karma.conf.js"/>
         </exec>
         <fail status="${result}">
