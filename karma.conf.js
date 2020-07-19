@@ -52,8 +52,8 @@ module.exports = function(config) {
     },
     autoWatch: false,
     concurrency: Infinity,
-    process.on('infrastructure_error', (error) => {
+  })
+  process.on('infrastructure_error', (error) => {
       console.error('infrastructure_error', error);
-   })
   })
 }
