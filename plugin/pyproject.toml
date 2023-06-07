@@ -33,3 +33,6 @@ dynamic = ["version"]
 
 [build-system]
 requires = ["setuptools", "setuptools-scm"]
+
+[tool.setuptools.dynamic]
+version = {attr = "omero-iviewer.VERSION"}
