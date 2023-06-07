@@ -29,5 +29,7 @@ dependencies = [
     "omero-web>=5.7.0",
 ]
 
+dynamic = ["version"]
+
 [build-system]
 requires = ["setuptools", "setuptools-scm"]
