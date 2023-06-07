@@ -1,5 +1,5 @@
 [project]
-name = "omero-iviewer"
+name = "omero_iviewer"
 description="A Python plugin for OMERO.web"
 authors = [ 
         {name = "The Open Microscopy Team", email = "ome-devel@lists.openmicroscopy.org.uk"},
