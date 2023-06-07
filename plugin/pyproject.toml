@@ -1,5 +1,5 @@
 [project]
-name = "omero_iviewer"
+name = "omero-iviewer"
 description="A Python plugin for OMERO.web"
 authors = [ 
         {name = "The Open Microscopy Team", email = "ome-devel@lists.openmicroscopy.org.uk"},
@@ -31,4 +31,3 @@ dependencies = [
 
 [build-system]
 requires = ["setuptools", "setuptools-scm"]
-build-backend = "setuptools.build_meta"
